@@ -59,8 +59,8 @@ class TestInlineMarkdown(unittest.TestCase):
         self.assertEqual(new_nodes, expected_nodes)
 
     def test_split_nodes_delimiter_different_delimiters(self):
-        old_nodes = [TextNode("This is *italic* and `code`", TextType.TEXT)]
-        new_nodes = split_nodes_delimiter(old_nodes, "*", TextType.ITALIC)
+        old_nodes = [TextNode("This is _italic_ and `code`", TextType.TEXT)]
+        new_nodes = split_nodes_delimiter(old_nodes, "_", TextType.ITALIC)
         expected_nodes = [
             TextNode("This is ", TextType.TEXT),
             TextNode("italic", TextType.ITALIC),
@@ -256,7 +256,7 @@ class TestInlineMarkdown(unittest.TestCase):
 
     # Test cases for text_to_textnodes
     def test_text_to_textnodes(self):
-        text = "This is **bold** and *italic* and `code` text with a [link](https://example.com) and an image ![Alt](image.jpg)"
+        text = "This is **bold** and _italic_ and `code` text with a [link](https://example.com) and an image ![Alt](image.jpg)"
         text_nodes = text_to_textnodes(text)
         expected_nodes = [
             TextNode("This is ", TextType.TEXT),
@@ -279,7 +279,7 @@ class TestInlineMarkdown(unittest.TestCase):
         self.assertEqual(text_nodes, expected_nodes)
 
     def test_text_to_textnodes_only_markdown(self):
-        text = "**Bold** *Italic* `Code` [Link](https://example.com) ![Alt](image.jpg)"
+        text = "**Bold** _Italic_ `Code` [Link](https://example.com) ![Alt](image.jpg)"
         text_nodes = text_to_textnodes(text)
         expected_nodes = [
             TextNode("Bold", TextType.BOLD),

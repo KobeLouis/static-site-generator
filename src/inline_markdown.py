@@ -1,7 +1,7 @@
 import re
 from textnode import TextType, TextNode
 
-def split_nodes_delimiter(old_nodes, delimiter, text_type):
+def split_nodes_delimiter(old_nodes: list[TextNode], delimiter: str, text_type: TextType)-> list[TextNode]:
     new_nodes = []
     for node in old_nodes:
         if node.text_type != TextType.TEXT:
@@ -22,17 +22,18 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
 
     return new_nodes
 
-def extract_markdown_images(text):
+def extract_markdown_images(text: str)-> list[tuple[str, str]]:
     pattern = r'!\[([^\[\]]*)\]\(([^\(\)]*)\)'
     matches = re.findall(pattern, text)
     return matches
 
-def extract_markdown_links(text):
+def extract_markdown_links(text: str)-> list[tuple[str, str]]:
     pattern = r'(?<!!)\[([^\[\]]*)\]\(([^\(\)]*)\)'
     matches = re.findall(pattern, text)
     return matches
 
-def split_nodes_images(old_nodes):
+def split_nodes_images(old_nodes: list[TextNode]):
+
     new_nodes = []
     for node in old_nodes:
         if node.text_type != TextType.TEXT:
@@ -62,7 +63,7 @@ def split_nodes_images(old_nodes):
 
     return new_nodes
 
-def split_nodes_links(old_nodes):
+def split_nodes_links(old_nodes: list[TextNode])-> list[TextNode]:
     new_nodes = []
     for node in old_nodes:
         if node.text_type != TextType.TEXT:
@@ -94,10 +95,10 @@ def split_nodes_links(old_nodes):
 
     return new_nodes
 
-def text_to_textnodes(text):
+def text_to_textnodes(text: str)-> list[TextNode]:
     nodes = []
     nodes = split_nodes_delimiter([TextNode(text, TextType.TEXT)], "**", TextType.BOLD)
-    nodes = split_nodes_delimiter(nodes, "*", TextType.ITALIC)
+    nodes = split_nodes_delimiter(nodes, "_", TextType.ITALIC)
     nodes = split_nodes_delimiter(nodes, "`", TextType.CODE)
     nodes = split_nodes_images(nodes)
     nodes = split_nodes_links(nodes)

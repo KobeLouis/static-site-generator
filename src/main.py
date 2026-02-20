@@ -1,12 +1,26 @@
-from textnode import *
+import os
+import shutil
+
+from copystatic import directory_copy
+from pagegenerator import generate_pages_recursive
+
+dir_path_static = "./static"
+dir_path_public = "./public"
+dir_path_content = "./content"
+template_path = "./template.html"
+
 
 def main():
-    """
-    The main function of the script.
-    Contains the primary logic to be executed.
-    """
-    node = TextNode("Anchor text", TextType.LINK, "https://github.com/KobeLouis/static-site-generator")
-    print(node)
+    print("Deleting public directory...")
+    if os.path.exists(dir_path_public):
+        shutil.rmtree(dir_path_public)
+
+    print("Copying static files to public directory...")
+    directory_copy(dir_path_static, dir_path_public)
+
+    print("Generating pages...")
+    generate_pages_recursive(dir_path_content, template_path, dir_path_public)
+
 
 if __name__ == "__main__":
     main()
